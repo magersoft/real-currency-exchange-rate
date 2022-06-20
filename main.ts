@@ -29,3 +29,5 @@ bot.command('rate', async (ctx) => {
 });
 
 bot.launch();
+
+console.log('Real Currency Exchange Rate Bot was be started!');
