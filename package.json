@@ -1,0 +1,20 @@
+{
+  "name": "real-currency-exchange-rate",
+  "version": "1.0.0",
+  "description": "Real currency exchange rate",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon main.ts"
+  },
+  "author": "magersoft <magervlad@yandex.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "telegraf": "^4.8.5",
+    "ts-node": "^10.8.1"
+  }
+}
