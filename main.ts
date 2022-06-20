@@ -1,7 +1,9 @@
 require('dotenv').config();
+import * as http from 'http';
 import { Telegraf } from 'telegraf';
 import { RealCurrencyExchangeRate } from './src/RealCurrencyExchangeRate';
 
+const PORT = process.env.PORT || 3000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const bot = new Telegraf(BOT_TOKEN);
 
@@ -30,4 +32,7 @@ bot.command('rate', async (ctx) => {
 
 bot.launch();
 
-console.log('Real Currency Exchange Rate Bot was be started!');
+const server = http.createServer(() => {})
+server.listen(PORT, () => {
+  console.log(`Real Currency Exchange Rate Bot was be started on port - ${PORT}`);
+})
