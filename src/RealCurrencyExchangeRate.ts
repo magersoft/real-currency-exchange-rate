@@ -126,8 +126,8 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
       throw new Error('Incorrect currency symbol length');
     }
 
-    const firstCurrencySymbol = this.currenciesSymbols.slice(0, 3);
-    const secondCurrencySymbol = this.currenciesSymbols.slice(3);
+    const firstCurrencySymbol = this.currenciesSymbols.slice(0, 3).toUpperCase();
+    const secondCurrencySymbol = this.currenciesSymbols.slice(3).toUpperCase();
 
     return { firstCurrencySymbol, secondCurrencySymbol };
   }

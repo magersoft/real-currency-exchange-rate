@@ -4,11 +4,10 @@ import TelegramBot from './src/TelegramBot';
 
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer(() => {
-  TelegramBot();
-});
+const server = http.createServer(() => {});
 
 server.listen(PORT, () => {
+  TelegramBot();
   console.log(`Real Currency Exchange Rate Bot was be started on port - ${PORT}`);
 });
 

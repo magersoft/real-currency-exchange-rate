@@ -25,6 +25,7 @@ export default function TelegramBot() {
 Источник: <a href="https://p2p.binance.com/en/trade/all-payments/USDT?fiat=${result.fiat}">Binance</a>
     `, { disable_web_page_preview: true })
     } catch (error) {
+      console.log(error);
       ctx.reply('Укажите пару валют, например RUBEUR')
     }
   });
