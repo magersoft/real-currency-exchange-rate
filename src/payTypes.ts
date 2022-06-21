@@ -7,5 +7,6 @@ export default (): any => ({
     "ABank",
     "BankSaintPetersburg"
   ],
+  "EGP": ["CIB", "CIBBank", "NBE"],
   "IDR": ["PermataMe"]
 })

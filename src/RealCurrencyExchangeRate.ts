@@ -12,7 +12,7 @@ import getPayTypes from './payTypes';
 
 export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
   static P2P_PAGE = 1;
-  static P2P_ROWS = 10;
+  static P2P_ROWS = 20;
   static P2P_ASSET = 'USDT';
   static P2P_DEFAULT_PAY_TYPES = ['BANK'];
 
@@ -115,8 +115,8 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
     this.firstP2PData = firstP2PData;
     this.secondP2PData = secondP2PData;
 
-    const firstCurrency = RealCurrencyExchangeRate.getCurrencyPrice(this.firstP2PData);
-    const secondCurrency = RealCurrencyExchangeRate.getCurrencyPrice(this.secondP2PData);
+    const firstCurrency = RealCurrencyExchangeRate.getMiddleCurrencyPrice(this.firstP2PData);
+    const secondCurrency = RealCurrencyExchangeRate.getMiddleCurrencyPrice(this.secondP2PData);
 
     this.rate = firstCurrency / secondCurrency;
   }
@@ -165,7 +165,8 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
     this.time = new Date().toLocaleTimeString('ru-RU', {timeZone: "Europe/Moscow"})
   }
 
-  private static getCurrencyPrice(data: TP2POrderDetail[]): number {
-    return +data[0].adv.price;
+  private static getMiddleCurrencyPrice(data: TP2POrderDetail[]): number {
+    const prices = data.map((item) => +item.adv.price);
+    return prices.reduce((a: number, b: number) => (a + b) / prices.length);
   }
 }
