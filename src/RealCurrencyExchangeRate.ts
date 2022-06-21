@@ -23,6 +23,8 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
   public symbol: string = '';
   public fiat: string = '';
   public rate: number = 0;
+  public minValue: string = '';
+  public maxValue: string = '';
   public time: string = '';
   public availableTradeMethods: string = '';
 
@@ -38,11 +40,14 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
     this.getCurrencySymbol();
     this.getCurrencyUnit();
     this.getCurrentTime();
+    this.getValuePrices();
 
     return {
       currency: this.currency,
       rate: this.rate,
       symbol: this.symbol,
+      minValue: this.minValue,
+      maxValue: this.maxValue,
       fiat: this.fiat,
       time: this.time,
       methods: this.availableTradeMethods,
@@ -112,6 +117,10 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
       asset: RealCurrencyExchangeRate.P2P_ASSET,
     });
 
+    if (!firstP2PData.length || !secondP2PData.length) {
+      throw new Error('Валюта указана некорректно или не найдена');
+    }
+
     this.firstP2PData = firstP2PData;
     this.secondP2PData = secondP2PData;
 
@@ -123,7 +132,7 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
 
   private parseCurrenciesSymbols(): TRateCurrencySymbol {
     if (this.currenciesSymbols.length !== 6) {
-      throw new Error('Incorrect currency symbol length');
+      throw new Error('Укажите пару валют, например RUBEUR');
     }
 
     const firstCurrencySymbol = this.currenciesSymbols.slice(0, 3).toUpperCase();
@@ -158,11 +167,32 @@ export class RealCurrencyExchangeRate implements IRealCurrencyExchangeRate {
     const code = this.secondP2PData[0].adv.fiatUnit;
 
     this.fiat = this.firstP2PData[0].adv.fiatUnit;
-    this.currency = new Intl.NumberFormat('ru', {style: "currency", currency: code, currencyDisplay: "name"}).format(1);
+    this.currency = new Intl.NumberFormat('ru', { style: 'currency', currency: code, currencyDisplay: 'name' }).format(1);
   }
 
   private getCurrentTime(): void {
     this.time = new Date().toLocaleTimeString('ru-RU', {timeZone: "Europe/Moscow"})
+  }
+
+  private getValuePrices(): void {
+    const code = this.secondP2PData[0].adv.fiatUnit;
+    const minTransAmounts = [];
+    const maxTransAmounts = [];
+
+    for (const item of this.secondP2PData) {
+      minTransAmounts.push(+item.adv.minSingleTransAmount);
+      maxTransAmounts.push(+item.adv.maxSingleTransAmount);
+    }
+
+    this.minValue = new Intl.NumberFormat('ru', {
+      style: 'currency',
+      currency: code,
+    }).format(Math.min.apply(null, minTransAmounts));
+
+    this.maxValue = new Intl.NumberFormat('ru', {
+      style: 'currency',
+      currency: code,
+    }).format(Math.max.apply(null, maxTransAmounts));
   }
 
   private static getMiddleCurrencyPrice(data: TP2POrderDetail[]): number {

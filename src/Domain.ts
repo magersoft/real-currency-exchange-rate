@@ -10,6 +10,8 @@ export type TRateResult = {
   currency: string;
   rate: number;
   symbol: string;
+  minValue: string;
+  maxValue: string;
   fiat: string;
   time: string;
   methods: string;
